@@ -71,7 +71,7 @@ public:
     double getLength() const;
     double getHeight() const;
     double getArea() const;
-    double getperimeter() const;
+    double getPerimeter() const;
     // чтобы передвинуть прямоугольник нужно передвинуть соответствующие координаты двух его точек
     void moveByX(double delta);
     void moveByY(double delta);
@@ -83,6 +83,10 @@ public:
     static int compByPerimeter(const Rectangle& lhs, const Rectangle& rhs);
     static Intersection getIntersection(Rectangle first, Rectangle second);
     static Union getUnion(Rectangle first, Rectangle second);
+    operator double() const;
+    Rectangle operator++();
+    // параметр post указывает компилятору на то, что инкремент постфиксный
+    Rectangle operator++(int post);
 private:
     Dot lowerLeft_;
     Dot upperRight_;
@@ -95,7 +99,7 @@ Dot Rectangle::getUpperRight() const { return upperRight_; }
 double Rectangle::getLength() const { return upperRight_.getX() - lowerLeft_.getY(); }
 double Rectangle::getHeight() const { return upperRight_.getX() - lowerLeft_.getY(); }
 double Rectangle::getArea() const { return getLength() * getHeight(); }
-double Rectangle::getperimeter() const { return 2 * (getLength() + getHeight()); }
+double Rectangle::getPerimeter() const { return 2 * (getLength() + getHeight()); }
 void Rectangle::moveByX(double delta) {
     lowerLeft_.moveByX(delta);
     upperRight_.moveByX(delta);
@@ -128,8 +132,8 @@ int Rectangle::compByArea(const Rectangle& lhs, const Rectangle& rhs) {
     return EQ;
 }
 int Rectangle::compByPerimeter(const Rectangle& lhs, const Rectangle& rhs) {
-    double lhsPer = lhs.getperimeter();
-    double rhsPer = rhs.getperimeter();
+    double lhsPer = lhs.getPerimeter();
+    double rhsPer = rhs.getPerimeter();
     if (lhsPer > rhsPer)
         return MORE;
     else if (lhsPer < rhsPer)
@@ -149,6 +153,32 @@ std::istream& operator>>(std::istream& stream, Rectangle& r) {
     r.setLowerLeft(lLeft);
     r.setUpperRight(uRight);
     return stream;
+}
+// приведение к double вычисляет площадь
+Rectangle::operator double() const {
+    return this->getArea();
+}
+Rectangle Rectangle::operator++() {
+    this->reduceHeight(-1.0);
+    this->reduceLength(-1.0);
+    Rectangle copy = *this; 
+    return copy;
+}
+Rectangle Rectangle::operator++(int post) {
+    Rectangle copy = *this; 
+    this->reduceHeight(-1.0);
+    this->reduceLength(-1.0);
+    return copy;
+}
+// сравнивать прямоугольники будем по площади
+bool operator<(const Rectangle& lhs, const Rectangle& rhs) {
+    return lhs.getArea() < rhs.getArea();
+}
+bool operator>(const Rectangle& lhs, const Rectangle& rhs) {
+    return lhs.getArea() > rhs.getArea();
+}
+bool operator==(const Rectangle& lhs, const Rectangle& rhs) {
+    return lhs.getArea() == rhs.getArea();
 }
 
 class Intersection {
@@ -263,9 +293,9 @@ void mainLoop(Rectangle& f, Rectangle& s) {
         else if (cmd == "p") {
             std::cin >> which;
             if (which == 1)
-                std::cout << f.getperimeter() << std::endl;
+                std::cout << f.getPerimeter() << std::endl;
             else if (which == 2)
-                std::cout << s.getperimeter() << std::endl;
+                std::cout << s.getPerimeter() << std::endl;
             else
                 std::cout << "Wrong arguments!" << std::endl;
         }
