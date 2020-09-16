@@ -268,6 +268,10 @@ void helper() {
     std::cout << "calculate intersection | i \n";
     std::cout << "calculate union        | u \n";
     std::cout << "print rectangle        | print [1, 2] \n";
+    std::cout << "compare rectangles     | cmp \n";
+    std::cout << "postfix increment      | posti [1, 2] \n";
+    std::cout << "prefix increment       | prefi [1, 2] \n";
+    std::cout << "rectangle to double    | double [1, 2] \n";
     std::cout << "end                    | end \n";
 }
 
@@ -370,6 +374,38 @@ void mainLoop(Rectangle& f, Rectangle& s) {
                 std::cout << f << std::endl;
             else if (which == 2)
                 std::cout << s << std::endl;
+            else
+                std::cout << "Wrong arguments!" << std::endl;
+        }
+        else if (cmd == "cmp") {
+            std::cout << "f < s: " << (f < s) <<
+                        " f > s " << (f > s) << 
+                        " f == s " << (f == s) << std::endl;
+        }
+        else if (cmd == "prefi") {
+            std::cin >> which >> num;
+            if (which == 1)
+                ++f;
+            else if (which == 2)
+                ++s;
+            else
+                std::cout << "Wrong arguments!" << std::endl;
+        }
+        else if (cmd == "posti") {
+            std::cin >> which >> num;
+            if (which == 1)
+                f++;
+            else if (which == 2)
+                s++;
+            else
+                std::cout << "Wrong arguments!" << std::endl;
+        }
+        else if (cmd == "double") {
+            std::cin >> which >> num;
+            if (which == 1)
+                std::cout << (double)f << std::endl;
+            else if (which == 2)
+                std::cout << (double)s << std::endl;
             else
                 std::cout << "Wrong arguments!" << std::endl;
         }
