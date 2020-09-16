@@ -379,11 +379,11 @@ void mainLoop(Rectangle& f, Rectangle& s) {
         }
         else if (cmd == "cmp") {
             std::cout << "f < s: " << (f < s) <<
-                        " f > s " << (f > s) << 
-                        " f == s " << (f == s) << std::endl;
+                        ", f > s: " << (f > s) << 
+                        ", f == s: " << (f == s) << std::endl;
         }
         else if (cmd == "prefi") {
-            std::cin >> which >> num;
+            std::cin >> which;
             if (which == 1)
                 ++f;
             else if (which == 2)
@@ -392,7 +392,7 @@ void mainLoop(Rectangle& f, Rectangle& s) {
                 std::cout << "Wrong arguments!" << std::endl;
         }
         else if (cmd == "posti") {
-            std::cin >> which >> num;
+            std::cin >> which;
             if (which == 1)
                 f++;
             else if (which == 2)
@@ -401,7 +401,7 @@ void mainLoop(Rectangle& f, Rectangle& s) {
                 std::cout << "Wrong arguments!" << std::endl;
         }
         else if (cmd == "double") {
-            std::cin >> which >> num;
+            std::cin >> which;
             if (which == 1)
                 std::cout << (double)f << std::endl;
             else if (which == 2)
