@@ -83,10 +83,7 @@ public:
     static int compByPerimeter(const Rectangle& lhs, const Rectangle& rhs);
     static Intersection getIntersection(Rectangle first, Rectangle second);
     static Union getUnion(Rectangle first, Rectangle second);
-    operator double() const;
-    Rectangle operator++();
-    // параметр post указывает компилятору на то, что инкремент постфиксный
-    Rectangle operator++(int post);
+    operator double();
 private:
     Dot lowerLeft_;
     Dot upperRight_;
@@ -155,19 +152,19 @@ std::istream& operator>>(std::istream& stream, Rectangle& r) {
     return stream;
 }
 // приведение к double вычисляет площадь
-Rectangle::operator double() const {
+Rectangle::operator double() {
     return this->getArea();
 }
-Rectangle Rectangle::operator++() {
-    this->reduceHeight(-1.0);
-    this->reduceLength(-1.0);
-    Rectangle copy = *this; 
-    return copy;
+Rectangle& operator++(Rectangle& r) {
+    r.reduceHeight(-1.0);
+    r.reduceLength(-1.0);
+    return r;
 }
-Rectangle Rectangle::operator++(int post) {
-    Rectangle copy = *this; 
-    this->reduceHeight(-1.0);
-    this->reduceLength(-1.0);
+// параметр post указывает компилятору на то, что инкремент постфиксный
+Rectangle operator++(Rectangle& r, int post) {
+    Rectangle copy = r; 
+    r.reduceHeight(-1.0);
+    r.reduceLength(-1.0);
     return copy;
 }
 // сравнивать прямоугольники будем по площади
