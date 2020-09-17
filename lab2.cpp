@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <string>
+#include <sstream>
 
 #define MORE 2
 #define LESS 1
@@ -177,6 +178,19 @@ bool operator>(const Rectangle& lhs, const Rectangle& rhs) {
 bool operator==(const Rectangle& lhs, const Rectangle& rhs) {
     return lhs.getArea() == rhs.getArea();
 }
+Rectangle operator "" _r(const char* str, long unsigned int size) {
+    std::string s;
+    for (auto i = 0; i < size; ++i) {
+        if (str[i] == ')' || str[i] == '(' || str[i] == ',')
+            s.push_back(' ');
+        else 
+            s.push_back(str[i]);
+    }
+    std::stringstream ss(s);
+    Rectangle res;
+    ss >> res;
+    return res;
+}
 
 class Intersection {
 public:
@@ -251,25 +265,28 @@ Union Rectangle::getUnion(Rectangle first, Rectangle second) {
 }
 
 void helper() {
-    std::cout << "description            | command \n";
-    std::cout << "-----------------------|---------------------\n";
-    std::cout << "command's description  | help \n";
-    std::cout << "calculate area         | a [1, 2] \n";
-    std::cout << "calculate perimeter    | p [1, 2]\n";
-    std::cout << "move rectangle x-axis  | mx [1, 2] <number>\n";
-    std::cout << "move rectangle y-axis  | my [1, 2] <number>\n";
-    std::cout << "change length          | cl [1, 2] <number> \n";
-    std::cout << "change height          | ch [1, 2] <number> \n";
-    std::cout << "compare by area        | cmpa \n";
-    std::cout << "compare by perimeter   | cmpp \n";
-    std::cout << "calculate intersection | i \n";
-    std::cout << "calculate union        | u \n";
-    std::cout << "print rectangle        | print [1, 2] \n";
-    std::cout << "compare rectangles     | cmp \n";
-    std::cout << "postfix increment      | posti [1, 2] \n";
-    std::cout << "prefix increment       | prefi [1, 2] \n";
-    std::cout << "rectangle to double    | double [1, 2] \n";
-    std::cout << "end                    | end \n";
+    std::cout << "description              | command \n";
+    std::cout << "-------------------------|---------------------\n";
+    std::cout << "command's description    | help \n";
+    std::cout << "calculate area           | a [1, 2] \n";
+    std::cout << "calculate perimeter      | p [1, 2]\n";
+    std::cout << "move rectangle x-axis    | mx [1, 2] <number>\n";
+    std::cout << "move rectangle y-axis    | my [1, 2] <number>\n";
+    std::cout << "change length            | cl [1, 2] <number> \n";
+    std::cout << "change height            | ch [1, 2] <number> \n";
+    std::cout << "compare by area          | cmpa \n";
+    std::cout << "compare by perimeter     | cmpp \n";
+    std::cout << "calculate intersection   | i \n";
+    std::cout << "calculate union          | u \n";
+    std::cout << "print rectangle          | print [1, 2] \n";
+    std::cout << "compare rectangles       | cmp \n";
+    std::cout << "postfix increment        | posti [1, 2] \n";
+    std::cout << "prefix increment         | prefi [1, 2] \n";
+    std::cout << "rectangle to double      | double [1, 2] \n";
+    std::cout << "literal for rectangle    | \n";
+    std::cout << "(print created rectangle | lit \n";
+    std::cout << " ((1, 2.9),(1.07, 0.0)) )| \n";
+    std::cout << "end                      | end \n";
 }
 
 // главный цикл интерактивной программы
@@ -290,8 +307,7 @@ void mainLoop(Rectangle& f, Rectangle& s) {
                 std::cout << s.getArea() << std::endl;
             else
                 std::cout << "Wrong arguments!" << std::endl;
-        }
-        else if (cmd == "p") {
+        } else if (cmd == "p") {
             std::cin >> which;
             if (which == 1)
                 std::cout << f.getPerimeter() << std::endl;
@@ -299,8 +315,7 @@ void mainLoop(Rectangle& f, Rectangle& s) {
                 std::cout << s.getPerimeter() << std::endl;
             else
                 std::cout << "Wrong arguments!" << std::endl;
-        }
-        else if (cmd == "mx") {
+        } else if (cmd == "mx") {
             std::cin >> which >> num;
             if (which == 1)
                 f.moveByX(num);
@@ -308,8 +323,7 @@ void mainLoop(Rectangle& f, Rectangle& s) {
                 s.moveByX(num);
             else
                 std::cout << "Wrong arguments!" << std::endl;
-        }
-        else if (cmd == "my") {
+        } else if (cmd == "my") {
             std::cin >> which >> num;
             if (which == 1)
                 f.moveByY(num);
@@ -317,8 +331,7 @@ void mainLoop(Rectangle& f, Rectangle& s) {
                 s.moveByY(num);
             else
                 std::cout << "Wrong arguments!" << std::endl;
-        }
-        else if (cmd == "cl") {
+        } else if (cmd == "cl") {
             std::cin >> which >> num;
             if (which == 1)
                 f.reduceLength(-num);
@@ -326,8 +339,7 @@ void mainLoop(Rectangle& f, Rectangle& s) {
                 s.reduceLength(-num);
             else
                 std::cout << "Wrong arguments!" << std::endl;
-        }
-        else if (cmd == "ch") {
+        } else if (cmd == "ch") {
             std::cin >> which >> num;
             if (which == 1)
                 f.reduceHeight(-num);
@@ -335,8 +347,7 @@ void mainLoop(Rectangle& f, Rectangle& s) {
                 s.reduceHeight(-num);
             else
                 std::cout << "Wrong arguments!" << std::endl;
-        }
-        else if (cmd == "cmpa") {
+        } else if (cmd == "cmpa") {
             int res = Rectangle::compByArea(f, s);
             if (res == LESS)
                 std::cout << "first rectangle's area is less than second" << std::endl;
@@ -344,8 +355,7 @@ void mainLoop(Rectangle& f, Rectangle& s) {
                 std::cout << "second rectangle's area is less than first" << std::endl;
             else
                 std::cout << "rectangle's areas are equal" << std::endl;
-        }
-        else if (cmd == "cmpp") {
+        } else if (cmd == "cmpp") {
             int res = Rectangle::compByPerimeter(f, s);
             if (res == LESS)
                 std::cout << "first rectangle's perimeter is less than second" << std::endl;
@@ -353,19 +363,16 @@ void mainLoop(Rectangle& f, Rectangle& s) {
                 std::cout << "second rectangle's perimeter is less than first" << std::endl;
             else
                 std::cout << "rectangle's perimeters are equal" << std::endl;
-        }
-        else if (cmd == "i") {
+        } else if (cmd == "i") {
             Intersection res = Rectangle::getIntersection(f, s);
             if (res.isValid())
                 std::cout << res.getRes() << std::endl;
             else
                 std::cout << "Intersection is empty!" << std::endl;
-        }
-        else if (cmd == "u") {
+        } else if (cmd == "u") {
             Union res = Rectangle::getUnion(f, s);
             std::cout << res.getRes() << std::endl;
-        }
-        else if (cmd == "print") {
+        } else if (cmd == "print") {
             std::cin >> which;
             if (which == 1)
                 std::cout << f << std::endl;
@@ -373,13 +380,11 @@ void mainLoop(Rectangle& f, Rectangle& s) {
                 std::cout << s << std::endl;
             else
                 std::cout << "Wrong arguments!" << std::endl;
-        }
-        else if (cmd == "cmp") {
+        } else if (cmd == "cmp") {
             std::cout << "f < s: " << (f < s) <<
                         ", f > s: " << (f > s) << 
                         ", f == s: " << (f == s) << std::endl;
-        }
-        else if (cmd == "prefi") {
+        } else if (cmd == "prefi") {
             std::cin >> which;
             if (which == 1)
                 ++f;
@@ -387,8 +392,7 @@ void mainLoop(Rectangle& f, Rectangle& s) {
                 ++s;
             else
                 std::cout << "Wrong arguments!" << std::endl;
-        }
-        else if (cmd == "posti") {
+        } else if (cmd == "posti") {
             std::cin >> which;
             if (which == 1)
                 f++;
@@ -396,8 +400,7 @@ void mainLoop(Rectangle& f, Rectangle& s) {
                 s++;
             else
                 std::cout << "Wrong arguments!" << std::endl;
-        }
-        else if (cmd == "double") {
+        } else if (cmd == "double") {
             std::cin >> which;
             if (which == 1)
                 std::cout << (double)f << std::endl;
@@ -405,6 +408,8 @@ void mainLoop(Rectangle& f, Rectangle& s) {
                 std::cout << (double)s << std::endl;
             else
                 std::cout << "Wrong arguments!" << std::endl;
+        } else if (cmd == "lit") {
+            std::cout << "((1, 2.9),(1.07, 0.0))"_r << std::endl;
         }
         else if (cmd == "end")
             continue;
