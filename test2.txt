@@ -1,0 +1,15 @@
+0 0
+3 6.3
+2 2
+6.78 7
+cmp
+posti 1
+posti 1
+print 1
+prefi 2
+print 2
+double 2
+ch 2 2.3
+double 2
+lit
+end

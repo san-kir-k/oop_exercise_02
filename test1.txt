@@ -1,0 +1,12 @@
+0 0
+3 3
+2 2
+6 7
+cmp
+posti 1
+print 1
+prefi 2
+print 2
+double 2
+lit
+end

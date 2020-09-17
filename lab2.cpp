@@ -24,12 +24,17 @@ public:
         x_ = x;
         y_ = y;
     }
+    Dot(const Dot& d) {
+        x_ = d.x_;
+        y_ = d.y_;
+    }
     double getX() const;
     double getY() const;
     void setX(double val);
     void setY(double val);
     void moveByX(double delta);
     void moveByY(double delta);
+    Dot& operator=(const Dot& d);
 private:
     double x_;
     double y_;
@@ -54,6 +59,11 @@ std::ostream& operator<<(std::ostream& stream, const Dot& d) {
     stream << "(" << d.getX() << ", " << d.getY() << ")";
     return stream;
 }
+Dot& Dot::operator=(const Dot& d) {
+    this->x_ = d.x_;
+    this->y_ = d.y_;
+    return *this;
+}
 
 class Rectangle {
 public:
@@ -64,6 +74,10 @@ public:
     Rectangle(Dot lowerLeft, Dot upperRight) {
         lowerLeft_ = lowerLeft;
         upperRight_ = upperRight;
+    }
+    Rectangle(const Rectangle& r) {
+        lowerLeft_ = r.lowerLeft_;
+        upperRight_ = r.upperRight_;
     }
     void setLowerLeft(const Dot& d);
     void setUpperRight(const Dot& d);
@@ -85,6 +99,7 @@ public:
     static Intersection getIntersection(Rectangle first, Rectangle second);
     static Union getUnion(Rectangle first, Rectangle second);
     operator double();
+    Rectangle& operator=(const Rectangle& r);
 private:
     Dot lowerLeft_;
     Dot upperRight_;
@@ -94,8 +109,8 @@ void Rectangle::setLowerLeft(const Dot& d) { lowerLeft_ = d; }
 void Rectangle::setUpperRight(const Dot& d) { upperRight_ = d; }
 Dot Rectangle::getLowerLeft() const { return lowerLeft_; }
 Dot Rectangle::getUpperRight() const { return upperRight_; }
-double Rectangle::getLength() const { return upperRight_.getX() - lowerLeft_.getY(); }
-double Rectangle::getHeight() const { return upperRight_.getX() - lowerLeft_.getY(); }
+double Rectangle::getLength() const { return upperRight_.getX() - lowerLeft_.getX(); }
+double Rectangle::getHeight() const { return upperRight_.getY() - lowerLeft_.getY(); }
 double Rectangle::getArea() const { return getLength() * getHeight(); }
 double Rectangle::getPerimeter() const { return 2 * (getLength() + getHeight()); }
 void Rectangle::moveByX(double delta) {
@@ -177,6 +192,11 @@ bool operator>(const Rectangle& lhs, const Rectangle& rhs) {
 }
 bool operator==(const Rectangle& lhs, const Rectangle& rhs) {
     return lhs.getArea() == rhs.getArea();
+}
+Rectangle& Rectangle::operator=(const Rectangle& r) {
+    this->upperRight_ = r.upperRight_;
+    this->lowerLeft_ = r.lowerLeft_;
+    return *this;
 }
 Rectangle operator "" _r(const char* str, long unsigned int size) {
     std::string s;
@@ -285,7 +305,7 @@ void helper() {
     std::cout << "rectangle to double      | double [1, 2] \n";
     std::cout << "literal for rectangle    | \n";
     std::cout << "(print created rectangle | lit \n";
-    std::cout << " ((1, 2.9),(1.07, 0.0)) )| \n";
+    std::cout << " ((0.97, 0.0),(1, 2.9)) )| \n";
     std::cout << "end                      | end \n";
 }
 
@@ -409,7 +429,7 @@ void mainLoop(Rectangle& f, Rectangle& s) {
             else
                 std::cout << "Wrong arguments!" << std::endl;
         } else if (cmd == "lit") {
-            std::cout << "((1, 2.9),(1.07, 0.0))"_r << std::endl;
+            std::cout << "((0.97, 0.0),(1, 2.9))"_r << std::endl;
         }
         else if (cmd == "end")
             continue;
